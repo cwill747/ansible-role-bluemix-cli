@@ -1,5 +1,6 @@
 cwill747.bluemix-cli
 =========
+[![Travis](https://img.shields.io/travis/cwill747/ansible-role-bluemix-cli.svg)]()
 
 This ansible role installs the Bluemix CLI on a remote Linux machine
 
