@@ -1,0 +1,35 @@
+---
+
+- name: "Bluemix CLI | Download Latest CLI"
+  get_url:
+    url: "https://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/latest/Bluemix_CLI_{{ bx_arch }}.tar.gz"
+    dest: /tmp/bluemix_cli.tar.gz
+    checksum: "sha256:{{ bx_sha256 }}"
+  when: bx_version == "latest"
+
+- name: "Bluemix CLI | Download Versioned CLI"
+  get_url:
+    url: "https://public.dhe.ibm.com/cloud/bluemix/cli/bluemix-cli/Bluemix_CLI_{{ bx_version }}_{{ bx_arch }}.tar.gz"
+    dest: /tmp/bluemix_cli.tar.gz
+    checksum: "sha256:{{ bx_sha256 }}"
+  when: bx_version != "latest"
+
+- name: "Bluemix CLI | Unarchive"
+  unarchive:
+    remote_src: yes
+    src: /tmp/bluemix_cli.tar.gz
+    dest: /tmp/
+
+- name: "Bluemix CLI | Install"
+  shell: /tmp/Bluemix_CLI/install_bluemix_cli
+  become: true
+
+- name: "Bluemix CLI | Cleanup Tar"
+  file:
+    path: /tmp/bluemix_cli.tar.gz
+    state: absent
+
+- name: "Bluemix CLI | Cleanup Folder"
+  file:
+    path: /tmp/Bluemix_CLI
+    state: absent
